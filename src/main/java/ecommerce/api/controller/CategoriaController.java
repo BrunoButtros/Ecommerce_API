@@ -35,7 +35,7 @@ private CategoriaService categoriaService;
     @PutMapping("/{id}")
     public ResponseEntity<CategoriaEntity> atualizarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO) {
         CategoriaEntity categoriaExistente = categoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Categoria nãoa encontrada"));
 
         categoriaExistente.setNome(categoriaDTO.nome());
 
