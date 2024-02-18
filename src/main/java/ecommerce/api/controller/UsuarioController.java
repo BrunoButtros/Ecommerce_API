@@ -1,9 +1,7 @@
 package ecommerce.api.controller;
 
 import ecommerce.api.dto.UsuarioDTO;
-import ecommerce.api.entity.ProdutoEntity;
 import ecommerce.api.entity.UsuarioEntity;
-import ecommerce.api.repository.UsuarioRepository;
 import ecommerce.api.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +19,13 @@ public class UsuarioController {
 
     @GetMapping
     public List<UsuarioEntity> procurarUsuario(
-            @RequestParam(required = false, defaultValue = "0") Long id,
-            @RequestParam(required = false, defaultValue = "") String nome,
-            @RequestParam(required = false, defaultValue = "") String email,
-            @RequestParam(required = false, defaultValue = "") String telefone){
-        return usuarioService.findAllUsuarios();
+        UsuarioDTO usuarioDTO)
+    {
 
-    }
+            return usuarioService.findAllUsuarios(usuarioDTO);
+        }
+
+
     @PostMapping
     public ResponseEntity<UsuarioEntity> cadastrarUsuario(@RequestBody UsuarioDTO dados) {
         UsuarioEntity usuario = usuarioService.cadastrarUsuario(dados);
