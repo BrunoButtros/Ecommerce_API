@@ -1,4 +1,4 @@
 package ecommerce.api.dto;
 
-public record UsuarioDTO(String id, String nome, String email, String telefone, String senha) {
+public record UsuarioDTO(String id, String nome, String email, String telefone) {
 }
