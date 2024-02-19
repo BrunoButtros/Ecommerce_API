@@ -3,7 +3,6 @@ package ecommerce.api.service;
 import ecommerce.api.dto.ProdutoDTO;
 import ecommerce.api.entity.CategoriaEntity;
 import ecommerce.api.entity.ProdutoEntity;
-import ecommerce.api.repository.CategoriaRepository;
 import ecommerce.api.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private CategoriaService categoriaService; // Injetando CategoriaService
 
     public List<ProdutoEntity> pesquisarProdutos(Long id, String nome) {
         if (!nome.isBlank() || id > 0L) return produtoRepository.findByNomeOrId(nome, id);
@@ -29,8 +28,7 @@ public class ProdutoService {
     public ProdutoEntity cadastrarProduto(ProdutoDTO dados) {
         Set<CategoriaEntity> categorias = new HashSet<>();
         dados.categoria().forEach(i -> {
-            categorias.add(categoriaRepository.findById(i.id())
-                    .orElseThrow(() -> new RuntimeException("Categoria não encontrada")));
+            categorias.add(categoriaService.findById(i.id()));
         });
 
         ProdutoEntity novoProduto = ProdutoEntity.builder()
@@ -41,9 +39,8 @@ public class ProdutoService {
                 .build();
 
         return produtoRepository.save(novoProduto);
-
-
     }
+
     public ProdutoEntity atualizarProduto(Long id, ProdutoDTO dados) {
         ProdutoEntity produtoExistente = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
@@ -51,8 +48,7 @@ public class ProdutoService {
         Set<CategoriaEntity> categorias = new HashSet<>();
         dados.categoria().forEach(i -> {
             if (i != null && i.id() != null) {
-                categorias.add(categoriaRepository.findById(i.id())
-                        .orElseThrow(() -> new RuntimeException("Categoria não encontrada")));
+                categorias.add(categoriaService.findById(i.id()));
             }
         });
 
@@ -65,6 +61,4 @@ public class ProdutoService {
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
         produtoRepository.delete(produtoExistente);
     }
-
-
 }
