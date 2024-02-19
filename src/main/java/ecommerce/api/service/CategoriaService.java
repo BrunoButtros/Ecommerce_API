@@ -12,11 +12,12 @@ import java.util.List;
 public class CategoriaService {
 
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    CategoriaRepository categoriaRepository;
 
     public List<CategoriaEntity> pesquisarCategorias(Long id, String nome) {
         if (!nome.isBlank() || id > 0L) return categoriaRepository.findByNomeOrId(nome, id);
         return categoriaRepository.findAll();
+
     }
 
     public CategoriaEntity criarCategoria(CategoriaDTO categoriaDTO) {
@@ -24,6 +25,8 @@ public class CategoriaService {
                 .nome(categoriaDTO.nome())
                 .build();
         return categoriaRepository.save(categoria);
+
+
     }
 
     public CategoriaEntity atualizarCategoria(Long id, CategoriaDTO categoriaDTO) {
@@ -31,7 +34,10 @@ public class CategoriaService {
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         categoriaExistente.setNome(categoriaDTO.nome());
+
         return categoriaRepository.save(categoriaExistente);
+
+
     }
 
     public void excluirCategoria(Long id) {
@@ -39,6 +45,7 @@ public class CategoriaService {
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         categoriaRepository.delete(categoriaExistente);
+
     }
 
     public CategoriaEntity findById(Long id) {
