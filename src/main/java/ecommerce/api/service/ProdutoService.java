@@ -18,7 +18,7 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
-    private CategoriaService categoriaService; // Injetando CategoriaService
+    private CategoriaService categoriaService;
 
     public List<ProdutoEntity> pesquisarProdutos(Long id, String nome) {
         if (!nome.isBlank() || id > 0L) return produtoRepository.findByNomeOrId(nome, id);
